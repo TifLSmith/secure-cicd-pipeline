@@ -1,24 +1,63 @@
-# learn-cicd-starter (Notely)
+# Secure CI/CD Pipeline
 
-This repo contains the starter code for the "Notely" application for the "Learn CICD" course on [Boot.dev](https://boot.dev).
+A Go web application used as a hands-on project for building a **DevSecOps pipeline with GitHub Actions**, embedding security checks directly into the CI/CD process so issues are caught before code reaches `main`.
 
-## Local Development
+> **Status:** In progress. See the [roadmap](#roadmap) for what's complete and what's next.
 
-Make sure you're on Go version 1.20+.
+## Why this project
 
-Create a `.env` file in the root of the project with the following contents:
+CI/CD systems have become a prime target for attackers because they hold source code, secrets, and the path to production. This project applies the [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/) to a real pipeline, one control at a time.
 
-```bash
+## Pipeline overview
+
+```mermaid
+flowchart LR
+    A[Pull request to main] --> B[Unit tests]
+    A --> C[Formatting check]
+    A --> D[Secret scanning<br/>TruffleHog]
+    A --> E[Vulnerability scanning<br/>Trivy]
+    B & C & D & E --> F{All checks pass?}
+    F -- Yes --> G[Merge allowed]
+    F -- No --> H[Merge blocked]
+```
+
+## Roadmap
+
+### CI foundation
+- [ ] Unit tests with coverage reporting on every pull request
+- [ ] Formatting check (`go fmt`) as a separate parallel job
+- [ ] Go version read from `go.mod` (single source of truth, no outdated toolchain)
+
+### Security controls
+- [ ] Secret scanning with TruffleHog
+- [ ] Dependency and Dockerfile vulnerability scanning with Trivy
+- [ ] All third-party actions pinned to full commit SHAs (supply chain protection)
+- [ ] Least-privilege `permissions:` on workflows
+- [ ] Branch protection: required status checks before merging to `main`
+
+## Tech stack
+
+- **Language:** Go
+- **CI/CD:** GitHub Actions
+- **Security tooling:** TruffleHog, Trivy
+- **Containerization:** Docker
+
+## Running locally
+
+Create a `.env` file in the project root:
+
+```
 PORT="8080"
 ```
 
-Run the server:
+Build and run:
 
 ```bash
 go build -o notely && ./notely
 ```
-**Testing** **Changes** Test, testing.
 
-*This starts the server in non-database mode.* It will serve a simple webpage at `http://localhost:8080`.
+The server starts at `http://localhost:8080` in non-database mode.
 
-You do *not* need to set up a database or any interactivity on the webpage yet. Instructions for that will come later in the course!
+## Credits
+
+The base "Notely" application comes from the [Learn CI/CD course on Boot.dev](https://boot.dev). The pipeline design and security hardening in this repository are my own work.
