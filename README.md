@@ -24,9 +24,9 @@ flowchart LR
 ## Roadmap
 
 ### CI foundation
-- [ ] Unit tests with coverage reporting on every pull request
-- [ ] Formatting check (`go fmt`) as a separate parallel job
-- [ ] Go version read from `go.mod` (single source of truth, no outdated toolchain)
+- [x] Unit tests with coverage reporting on every pull request
+- [x] Formatting check (`go fmt`) as a separate parallel job
+- [x] Go version read from `go.mod` (single source of truth, no outdated toolchain)
 
 ### Security controls
 - [ ] Secret scanning with TruffleHog
