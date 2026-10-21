@@ -36,3 +36,17 @@ jobs:
 
       - name: Check formatting
         run: test -z "$(go fmt ./...)"
+  secrets:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --results=verified,unknown

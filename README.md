@@ -29,7 +29,7 @@ flowchart LR
 - [x] Go version read from `go.mod` (single source of truth, no outdated toolchain)
 
 ### Security controls
-- [ ] Secret scanning with TruffleHog
+- [x] Secret scanning with TruffleHog
 - [ ] Dependency and Dockerfile vulnerability scanning with Trivy
 - [ ] All third-party actions pinned to full commit SHAs (supply chain protection)
 - [ ] Least-privilege `permissions:` on workflows
