@@ -35,6 +35,22 @@ flowchart LR
 - [ ] Least-privilege `permissions:` on workflows
 - [ ] Branch protection: required status checks before merging to `main`
 
+## Verifying the controls
+
+Security controls are only trusted once they're tested.
+
+### Secret scanning (tested October 2026)
+- Created a [canary token](https://canarytokens.org): a decoy AWS key with no permissions that alerts its owner when used.
+- **Layer 1, GitHub push protection:** blocked the push and identified an Amazon AWS Secret Access Key.
+- **Layer 2, TruffleHog in CI:** after a deliberate, documented bypass ("used in tests"), the Secret Scan job reported a **verified** AWS credential and failed the pull request with exit code 183 ([test PR #5](https://github.com/TifLSmith/secure-cicd-pipeline/pull/5), closed without merging).
+- **Cleanup:** PR closed, branch deleted, canary token disabled.
+- **Finding:** the scan pulled `trufflehog:latest`, an unpinned image. Pinning is tracked in the roadmap.
+
+### Stretch goals
+- [ ] Kubernetes deployment manifest for the app
+- [ ] Kubernetes misconfiguration scanning (Trivy or Kubescape)
+- [ ] Signed build provenance (SLSA)
+
 ## Tech stack
 
 - **Language:** Go
